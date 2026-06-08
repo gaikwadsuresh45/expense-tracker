@@ -34,6 +34,20 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .expense-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #total {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2d5a3d;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -42,21 +56,54 @@
 
   <div class="card">
     <h2>Expense Add Karo</h2>
-    <input type="text" placeholder="Kya kharch kiya?">
-    <input type="number" placeholder="Kitne rupaye?">
-    <select>
+    <input type="text" id="kya" placeholder="Kya kharch kiya?">
+    <input type="number" id="kitna" placeholder="Kitne rupaye?">
+    <select id="category">
       <option>Food</option>
       <option>Travel</option>
       <option>Books</option>
       <option>Other</option>
     </select>
-    <button>Add Karo</button>
+    <button onclick="expenseAdd()">Add Karo</button>
   </div>
 
   <div class="card">
     <h2>Expense List</h2>
-    <p>Abhi koi expense nahi hai.</p>
+    <div id="expenseList"></div>
+    <div id="total">Total: ₹0</div>
   </div>
+
+<script>
+
+  let totalAmount = 0;
+
+  function expenseAdd() {
+
+    let kya = document.getElementById("kya").value;
+    let kitna = document.getElementById("kitna").value;
+    let category = document.getElementById("category").value;
+
+    if (kya === "" || kitna === "") {
+      alert("Bhai! Dono fields bharo pehle!");
+      return;
+    }
+
+    let list = document.getElementById("expenseList");
+    list.innerHTML += `
+      <div class="expense-item">
+        <span>${kya} (${category})</span>
+        <span>₹${kitna}</span>
+      </div>
+    `;
+
+    totalAmount += Number(kitna);
+    document.getElementById("total").innerText = "Total: ₹" + totalAmount;
+
+    document.getElementById("kya").value = "";
+    document.getElementById("kitna").value = "";
+  }
+
+</script>
 
 </body>
 </html>
