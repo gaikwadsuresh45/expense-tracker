@@ -9,23 +9,19 @@
       background: #f0f2f5;
       padding: 20px;
     }
-
     h1 { color: #2d5a3d; }
-
     .card {
       background: white;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 15px;
     }
-
     input, select {
       padding: 8px;
       margin-right: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-
     button {
       padding: 8px 15px;
       background: #2d5a3d;
@@ -34,7 +30,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     .expense-item {
       padding: 10px;
       border-bottom: 1px solid #eee;
@@ -42,13 +37,11 @@
       justify-content: space-between;
       align-items: center;
     }
-
     .delete-btn {
       background: #e74c3c;
       padding: 4px 10px;
       font-size: 12px;
     }
-
     #total {
       font-size: 18px;
       font-weight: bold;
@@ -58,9 +51,7 @@
   </style>
 </head>
 <body>
-
   <h1>Mera Expense Tracker</h1>
-
   <div class="card">
     <h2>Expense Add Karo</h2>
     <input type="text" id="kya" placeholder="Kya kharch kiya?">
@@ -73,72 +64,51 @@
     </select>
     <button onclick="expenseAdd()">Add Karo</button>
   </div>
-
   <div class="card">
     <h2>Expense List</h2>
     <div id="expenseList"></div>
     <div id="total">Total: ₹0</div>
   </div>
-
 <script>
-
-  // localStorage se data load karo
   let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-
-  // Page load pe list dikhao
   expenses.forEach((exp, index) => displayExpense(exp, index));
   updateTotal();
-
   function expenseAdd() {
     let kya = document.getElementById("kya").value;
     let kitna = document.getElementById("kitna").value;
     let category = document.getElementById("category").value;
-
     if (kya === "" || kitna === "") {
       alert("Bhai! Dono fields bharo pehle!");
       return;
     }
-
     let expense = { kya, kitna: Number(kitna), category };
     expenses.push(expense);
-
-    // localStorage mein save karo
     localStorage.setItem("expenses", JSON.stringify(expenses));
-
     displayExpense(expense, expenses.length - 1);
     updateTotal();
-
     document.getElementById("kya").value = "";
     document.getElementById("kitna").value = "";
   }
-
   function displayExpense(exp, index) {
     let list = document.getElementById("expenseList");
     list.innerHTML += `
-      <div class="expense-item" id="item-${index}">
+      <div class="expense-item">
         <span>${exp.kya} (${exp.category})</span>
         <span>₹${exp.kitna}</span>
         <button class="delete-btn" onclick="deleteExpense(${index})">Delete</button>
-      </div>
-    `;
+      </div>`;
   }
-
   function deleteExpense(index) {
     expenses.splice(index, 1);
     localStorage.setItem("expenses", JSON.stringify(expenses));
-
-    // List refresh karo
     document.getElementById("expenseList").innerHTML = "";
     expenses.forEach((exp, i) => displayExpense(exp, i));
     updateTotal();
   }
-
   function updateTotal() {
     let total = expenses.reduce((sum, exp) => sum + exp.kitna, 0);
     document.getElementById("total").innerText = "Total: ₹" + total;
   }
-
 </script>
-
 </body>
 </html>
